@@ -37,8 +37,8 @@ app.use(function(req, res, next) {
 });
 
 
-// var userService = require('./services/user.service.server');
-// userService(app);
+var userService = require('./services/user.service.server');
+userService(app);
 // var sectionService = require('./services/section.service.server');
 // sectionService(app);
 // var enrollmentService = require('./services/enrollment.service.server');
