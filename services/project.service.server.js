@@ -62,7 +62,6 @@ module.exports = function (app) {
             projectModel.deleteProject(id).then(function (status) {
                 res.send(status);
             })
-
         }
         else {
             res.send('session expired');
