@@ -8,163 +8,64 @@ module.exports = function (app) {
         secret: 'any string'
     }));
 
-    var userModel =
-        require('./../models/user/user.model.server');
+    var extraCurricularModel =
+        require('./../models/extra-curricular/extra-curricular.model.server');
 
-    // admin access
-    app.get('/api/user/', findAllUsers);
-    app.get('/api/user/:userId', findUserById);
-    app.post('/api/user/', createUser);
-
-    // users
-    app.post('/api/login', login);
-    app.post('/api/register', register);
-    app.get('/api/profile', getProfile);
-    app.post('/api/logout', logout);
-    app.put('/api/profile', updateProfile);
-    app.delete('/api/profile', deleteUser);
+    app.get('/api/extraCurricular', findExtraCurricularByUserId);
+    app.post('/api/extraCurricular', createExtraCurricular);
+    app.put('/api/extraCurricular/:extraCurricularId', updateExtraCurricular);
+    app.delete('/api/extraCurricular/:extraCurricularId', deleteExtraCurricular);
 
 
-    function createUser(req, res) {
-        var user = req.body;
-
-        console.log(user);
-        userModel.createUser(user)
-            .then(function (status) {
-                res.send(status);
-            });
-    }
-
-    function findAllUsers(req, res) {
-        userModel.findAllUsers()
-            .then(function (user) {
-                res.send(user);
-            });
-    }
-
-    function findUserById(req, res) {
-        var userId = req.params['userId']
-        userModel.findUserById(userId)
-            .then(function (user) {
-                res.json(user);
-            });
-    }
-
-    // function login(req, res) {
-    //     var user = req.body;
-    //     var username = user.username;
-    //     var password = user.password;
-    //     userModel.findUserByCredentials(username, password)
-    //         .then(function (u) {
-    //             if (u != null) {
-    //                 req.session['user'] = u;
-    //                 res.send(u);
-    //             }
-    //             else {
-    //                 res.send(null);
-    //             }
-    //         });
-    //
-    // }
-
-    function login(req, res) {
-        var user = req.body;
-        var username = user.username;
-        var password = user.password;
-        userModel.findUserByCredentials(username, password)
-            .then((u) =>   {
-               if (u!=null){
-                   if ((u.role === 'JobSeeker' || u.role === 'Admin')
-                       || (u.role === 'Recruiter' && u.requestStatus != 'Pending')){
-                       req.session['user']=u;
-                       res.json({status:'success',role:u.role})
-                   }  else {
-                           res.json({status:'Recruiter verification pending',role:null});
-                   }
-
-               } else {
-                   res.json({status:'user does not exists',role:null});
-               }
-
-            });
-
-    }
-
-    function register(req, res) {
-        var user = req.body;
-        var username = user.username;
-        userModel.findUserByUsername(username).then(function (u) {
-            console.log(u);
-            if (u != null) {
-                res.json({status: false});
-            } else {
-                userModel.createUser(user).then(function (user) {
-                    user.password = '';
-                    if (user.role!= 'Recruiter') {
-                        req.session['user'] = user;
-                    }
-                    res.json({status: true});
-                })
-            }
-        })
-
-    }
-
-    function getProfile(req, res) {
+    function createExtraCurricular(req, res) {
+        var extraCurricular = req.body;
         if (req.session && req.session['user']) {
-            console.log('check this');
-            console.log(req.session['user']);
-            res.json(req.session['user']);
-
-        } else {
-            res.send(null);
-        }
-
-    }
-
-    function updateProfile(req, res) {
-        if (req.session && req.session['user']) {
-            var user = req.session['user'];
-            var id = user._id;
-           // console.log(id);
-            var newUser = req.body;
-            userModel.updateUser(id, newUser).then(
-                function (status) {
-                    id['_id'] = id;
-                    req.session['user'] = newUser;
+            extraCurricular['user'] = req.session['user']._id;
+            extraCurricularModel.createExtraCurricular(extraCurricular)
+                .then(function (status) {
                     res.send(status);
-                }
-            );
-
+                });
         } else {
-            res.send(null);
+            res.send({status: 'session expired'});
         }
-
     }
 
-    function logout(req, res) {
+
+    function findExtraCurricularByUserId(req, res) {
         if (req.session && req.session['user']) {
-            //delete req.session['user'];
-            req.session.destroy();
-            res.send('logged-out');
-
+            var userId = req.params['userId']._id;
+            extraCurricularModel.findExtraCurricularByUserId(userId)
+                .then(function (extraCurricular) {
+                    res.json(extraCurricular);
+                });
+        } else {
+            res.send({status: 'session expired'});
         }
-        else {
-            res.send('no-session-exists');
-        }
-
     }
 
-    function deleteUser(req, res) {
+    function updateExtraCurricular(req, res) {
+        var extraCurricular = req.body;
+        var extraCurricularId = req.param['extraCurricularId'];
         if (req.session && req.session['user']) {
-            var id = req.session['user']._id;
-            userModel.deleteUser(id).then(function (status) {
+            extraCurricularModel.updateExtraCurricular(extraCurricularId,extraCurricular)
+                .then(function (status) {
+                    res.send(status);
+                });
+        } else {
+            res.send({status: 'session expired'});
+        }
+    }
+
+    function deleteExtraCurricular(req, res) {
+        if (req.session && req.session['user']) {
+            var id = req.param['extraCurricularId'];
+            extraCurricularModel.deleteExtraCurricular(id).then(function (status) {
                 res.send(status);
             })
 
         }
         else {
-            res.send('no-session-exists');
+            res.send('session expired');
         }
     }
 };
