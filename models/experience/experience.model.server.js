@@ -1,54 +1,31 @@
-// var mongoose =
-//     require('mongoose');
-// var userSchema =
-//     require('./recruiter-detail.schema.server');
-// var userModel = mongoose
-//     .model('UserModel', userSchema);
-//
-//
-// module.exports = {
-//     findUserById: findUserById,
-//     findAllUsers:findAllUsers,
-//     findUserByUsername: findUserByUsername,
-//     findUserByCredentials: findUserByCredentials,
-//     createUser: createUser,
-//     deleteUser: deleteUser,
-//     updateUser: updateUser
-// };
-//
-// function findAllUsers() {
-//     return userModel.find();
-// }
-//
-//
-// function findUserById(userId) {
-//     return userModel.findById(userId,{password:0});
-// }
-//
-// function findUserByUsername(username) {
-//     return userModel.findOne({username: username},{password: 0});
-// }
-//
-// function findUserByCredentials(username, password) {
-//     return userModel.findOne({
-//         username: username, password: password
-//     },{password: 0});
-// }
-//
-// function createUser(user) {
-//     console.log(user);
-//     return userModel.create(user);
-// }
-//
-// function deleteUser(userId) {
-//     return userModel.remove({_id: userId});
-// }
-//
-// function updateUser(userId, newUser) {
-//     return userModel.update({_id: userId},
-//         {$set: newUser})
-// }
-//
-//
-//
-//
+var mongoose =
+    require('mongoose');
+var experienceSchema =
+    require('./experience.schema.server');
+var experienceModel = mongoose
+    .model('ExperienceModel', experienceSchema);
+
+
+module.exports = {
+    findExperienceByUserId: findExperienceByUserId,
+    createExperience: createExperience,
+    deleteExperience: deleteExperience,
+    updateExperience: updateExperience
+};
+
+function findExperienceByUserId(userId) {
+    return experienceModel.findById(userId);
+}
+
+function createExperience(experience) {
+    return experienceModel.create(experience);
+}
+
+function deleteExperience(experienceId) {
+    return experienceModel.remove({_id: experienceId});
+}
+
+function updateExperience(experienceId, newExperience) {
+    return experienceModel.update({_id: experienceId},
+        {$set: newExperience})
+}

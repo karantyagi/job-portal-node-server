@@ -1,54 +1,31 @@
-// var mongoose =
-//     require('mongoose');
-// var userSchema =
-//     require('./recruiter-detail.schema.server');
-// var userModel = mongoose
-//     .model('UserModel', userSchema);
-//
-//
-// module.exports = {
-//     findUserById: findUserById,
-//     findAllUsers:findAllUsers,
-//     findUserByUsername: findUserByUsername,
-//     findUserByCredentials: findUserByCredentials,
-//     createUser: createUser,
-//     deleteUser: deleteUser,
-//     updateUser: updateUser
-// };
-//
-// function findAllUsers() {
-//     return userModel.find();
-// }
-//
-//
-// function findUserById(userId) {
-//     return userModel.findById(userId,{password:0});
-// }
-//
-// function findUserByUsername(username) {
-//     return userModel.findOne({username: username},{password: 0});
-// }
-//
-// function findUserByCredentials(username, password) {
-//     return userModel.findOne({
-//         username: username, password: password
-//     },{password: 0});
-// }
-//
-// function createUser(user) {
-//     console.log(user);
-//     return userModel.create(user);
-// }
-//
-// function deleteUser(userId) {
-//     return userModel.remove({_id: userId});
-// }
-//
-// function updateUser(userId, newUser) {
-//     return userModel.update({_id: userId},
-//         {$set: newUser})
-// }
-//
-//
-//
-//
+var mongoose =
+    require('mongoose');
+var educationSchema =
+    require('./education.schema.server');
+var educationModel = mongoose
+    .model('EducationModel', educationSchema);
+
+
+module.exports = {
+    findEducationByUserId: findEducationByUserId,
+    createEducation: createEducation,
+    deleteEducation: deleteEducation,
+    updateEducation: updateEducation
+};
+
+function findEducationByUserId(userId) {
+    return educationModel.findById(userId);
+}
+
+function createEducation(education) {
+    return educationModel.create(education);
+}
+
+function deleteEducation(educationId) {
+    return educationModel.remove({_id: educationId});
+}
+
+function updateEducation(educationId, newEducation) {
+    return educationModel.update({_id: educationId},
+        {$set: newEducation})
+}

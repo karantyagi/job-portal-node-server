@@ -1,8 +1,12 @@
 var mongoose = require('mongoose');
-var recruiterDetailSchema = mongoose.Schema({
+var awardSchema = mongoose.Schema({
     title : String,
-    company : {type: mongoose.Schema.Types.ObjectId, ref: 'Company'}
+    associatedWith : String,
+    dateConferred : Date,
+    issuer : String,
+    description : String,
+    user : {type: mongoose.Schema.Types.ObjectId, ref: 'UserModel'}
 
-}, {collection: 'RecruiterDetail'});
+}, {collection: 'Award'});
 
-module.exports = recruiterDetailSchema;
+module.exports = awardSchema;
