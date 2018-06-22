@@ -39,8 +39,34 @@ app.use(function(req, res, next) {
 
 var userService = require('./services/user.service.server');
 userService(app);
+
 var skillService = require('./services/skill.service.server');
 skillService(app);
+
+var awardService = require('./services/award.service.server');
+awardService(app);
+
+var certificateService = require('./services/certificate.service.server');
+certificateService(app);
+
+var educationService = require('./services/education.service.server');
+educationService(app);
+
+var extraCurricularService = require('./services/extra-curricular.service.server');
+extraCurricularService(app);
+
+var experienceService = require('./services/experience.service.server');
+experienceService(app);
+
+var jobApplicationService = require('./services/job-application.service.server');
+jobApplicationService(app);
+
+var jobPostingService = require('./services/job-posting.service.server');
+jobPostingService(app);
+
+
+
+
 // var enrollmentService = require('./services/enrollment.service.server');
 // enrollmentService(app);
 // var coursePrivacyService = require('./services/course-privacy.service.server');

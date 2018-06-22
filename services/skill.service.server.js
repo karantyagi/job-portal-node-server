@@ -13,8 +13,8 @@ module.exports = function (app) {
 
     app.get('/api/skill', findSkillByUserId);
     app.post('/api/skill', createSkill);
-    app.put('/api/skill/skillId', updateSkill);
-    app.delete('/api/skill/skillId', deleteSkill);
+    app.put('/api/skill/:skillId', updateSkill);
+    app.delete('/api/skill/:skillId', deleteSkill);
 
 
     function createSkill(req, res) {
