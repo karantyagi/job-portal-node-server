@@ -56,8 +56,6 @@ module.exports = function (app) {
         }
     }
 
-
-
     function deleteSkill(req, res) {
         if (req.session && req.session['user']) {
             var id = req.param['skillId'];

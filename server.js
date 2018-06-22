@@ -39,8 +39,8 @@ app.use(function(req, res, next) {
 
 var userService = require('./services/user.service.server');
 userService(app);
-// var sectionService = require('./services/section.service.server');
-// sectionService(app);
+var skillService = require('./services/skill.service.server');
+skillService(app);
 // var enrollmentService = require('./services/enrollment.service.server');
 // enrollmentService(app);
 // var coursePrivacyService = require('./services/course-privacy.service.server');
