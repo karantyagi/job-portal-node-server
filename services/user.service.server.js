@@ -17,7 +17,7 @@ module.exports = function (app) {
     app.get('/api/pending', findPendingRecruiters);
     app.post('/api/user/', createUser);
     app.delete('/api/user/:userId', deleteUser);
-    app.approveRecruiter('/api/approve/userId',approveRecruiter)
+    app.post('/api/approve/userId',approveRecruiter)
 
     // users
     app.post('/api/login', login);
@@ -25,7 +25,7 @@ module.exports = function (app) {
     app.get('/api/profile', getProfile);
     app.post('/api/logout', logout);
     app.put('/api/profile', updateProfile);
-    app.deleteProfile('/api/user', deleteProfile);
+    app.delete('/api/user', deleteProfile);
 
     function createUser(req, res) {
         var user = req.body;
