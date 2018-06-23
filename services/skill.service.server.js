@@ -45,7 +45,7 @@ module.exports = function (app) {
 
     function updateSkill(req, res) {
         var skill = req.body;
-        var skillId = req.param['skillId'];
+        var skillId = req.params['skillId'];
         if (req.session && req.session['user']) {
             skillModel.updateSkill(skillId,skill)
                 .then(function (status) {
@@ -58,7 +58,7 @@ module.exports = function (app) {
 
     function deleteSkill(req, res) {
         if (req.session && req.session['user']) {
-            var id = req.param['skillId'];
+            var id = req.params['skillId'];
             skillModel.deleteSkill(id).then(function (status) {
                 res.send(status);
             })

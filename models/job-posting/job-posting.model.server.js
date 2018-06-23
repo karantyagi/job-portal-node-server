@@ -22,6 +22,7 @@ function findAllJobPostings() {
 
 
 function findJobPostingById(jobPostingId) {
+    console.log(jobPostingId);
     return jobPostingModel.findById(jobPostingId);
 }
 

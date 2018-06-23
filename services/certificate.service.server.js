@@ -45,7 +45,7 @@ module.exports = function (app) {
 
     function updateCertificate(req, res) {
         var certificate = req.body;
-        var certificateId = req.param['certificateId'];
+        var certificateId = req.params['certificateId'];
         if (req.session && req.session['user']) {
             certificateModel.updateCertificate(certificateId,certificate)
                 .then(function (status) {
@@ -58,7 +58,7 @@ module.exports = function (app) {
 
     function deleteCertificate(req, res) {
         if (req.session && req.session['user']) {
-            var id = req.param['certificateId'];
+            var id = req.params['certificateId'];
             certificateModel.deleteCertificate(id).then(function (status) {
                 res.send(status);
             })

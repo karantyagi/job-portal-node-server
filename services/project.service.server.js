@@ -45,7 +45,7 @@ module.exports = function (app) {
 
     function updateProject(req, res) {
         var project = req.body;
-        var projectId = req.param['projectId'];
+        var projectId = req.params['projectId'];
         if (req.session && req.session['user']) {
             projectModel.updateProject(projectId,project)
                 .then(function (status) {
@@ -58,7 +58,7 @@ module.exports = function (app) {
 
     function deleteProject(req, res) {
         if (req.session && req.session['user']) {
-            var id = req.param['projectId'];
+            var id = req.params['projectId'];
             projectModel.deleteProject(id).then(function (status) {
                 res.send(status);
             })

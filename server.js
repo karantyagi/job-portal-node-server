@@ -66,13 +66,6 @@ jobPostingService(app);
 
 
 
-
-// var enrollmentService = require('./services/enrollment.service.server');
-// enrollmentService(app);
-// var coursePrivacyService = require('./services/course-privacy.service.server');
-// coursePrivacyService(app);
-
-
 app.listen(process.env.PORT || 5500, function(){
     console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });

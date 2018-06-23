@@ -45,7 +45,7 @@ module.exports = function (app) {
 
     function updateExperience(req, res) {
         var experience = req.body;
-        var experienceId = req.param['experienceId'];
+        var experienceId = req.params['experienceId'];
         if (req.session && req.session['user']) {
             experienceModel.updateExperience(experienceId,experience)
                 .then(function (status) {
@@ -58,7 +58,7 @@ module.exports = function (app) {
 
     function deleteExperience(req, res) {
         if (req.session && req.session['user']) {
-            var id = req.param['experienceId'];
+            var id = req.params['experienceId'];
             experienceModel.deleteExperience(id).then(function (status) {
                 res.send(status);
             })

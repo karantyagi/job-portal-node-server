@@ -45,7 +45,7 @@ module.exports = function (app) {
 
     function updateEducation(req, res) {
         var education = req.body;
-        var educationId = req.param['educationId'];
+        var educationId = req.params['educationId'];
         if (req.session && req.session['user']) {
             educationModel.updateEducation(educationId,education)
                 .then(function (status) {
@@ -58,7 +58,7 @@ module.exports = function (app) {
 
     function deleteEducation(req, res) {
         if (req.session && req.session['user']) {
-            var id = req.param['educationId'];
+            var id = req.params['educationId'];
             educationModel.deleteEducation(id).then(function (status) {
                 res.send(status);
             })

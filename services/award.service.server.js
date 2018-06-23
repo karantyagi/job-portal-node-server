@@ -45,7 +45,7 @@ module.exports = function (app) {
 
     function updateAward(req, res) {
         var award = req.body;
-        var awardId = req.param['awardId'];
+        var awardId = req.params['awardId'];
         if (req.session && req.session['user']) {
             awardModel.updateAward(awardId,award)
                 .then(function (status) {
@@ -58,7 +58,7 @@ module.exports = function (app) {
 
     function deleteAward(req, res) {
         if (req.session && req.session['user']) {
-            var id = req.param['awardId'];
+            var id = req.params['awardId'];
             awardModel.deleteAward(id).then(function (status) {
                 res.send(status);
             })

@@ -45,7 +45,7 @@ module.exports = function (app) {
 
     function updateExtraCurricular(req, res) {
         var extraCurricular = req.body;
-        var extraCurricularId = req.param['extraCurricularId'];
+        var extraCurricularId = req.params['extraCurricularId'];
         if (req.session && req.session['user']) {
             extraCurricularModel.updateExtraCurricular(extraCurricularId,extraCurricular)
                 .then(function (status) {
@@ -58,7 +58,7 @@ module.exports = function (app) {
 
     function deleteExtraCurricular(req, res) {
         if (req.session && req.session['user']) {
-            var id = req.param['extraCurricularId'];
+            var id = req.params['extraCurricularId'];
             extraCurricularModel.deleteExtraCurricular(id).then(function (status) {
                 res.send(status);
             })
