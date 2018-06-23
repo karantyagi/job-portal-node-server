@@ -125,7 +125,7 @@ module.exports = function (app) {
             var newUser = req.body;
             userModel.updateUser(id, newUser).then(
                 function (status) {
-                    id['_id'] = id;
+                    newUser['_id'] = id;
                     req.session['user'] = newUser;
                     res.send(status);
                 }
