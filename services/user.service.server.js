@@ -14,6 +14,7 @@ module.exports = function (app) {
     // admin access
     app.get('/api/user/', findAllUsers);
     app.get('/api/user/:userId', findUserById);
+    app.get('/api/pending', findPendingRecruiters);
     app.post('/api/user/', createUser);
 
     // users
@@ -48,6 +49,15 @@ module.exports = function (app) {
             .then(function (user) {
                 res.json(user);
             });
+    }
+
+    function findPendingRecruiters(req, res) {
+        if (req.session && req.session['user'] && req.session['user'].username==='admin') {
+            userModel.findPendingRecruiters()
+                .then(function (user) {
+                    res.json(user);
+                });
+        }
     }
 
     // function login(req, res) {

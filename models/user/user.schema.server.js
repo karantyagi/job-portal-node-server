@@ -7,7 +7,7 @@ var userSchema = mongoose.Schema({
     email: String,
     phone: String,
     role: String,
-    requestStatus: String,
+    requestStatus: String, // 'status types : 'Pending' && 'Verified''
     socialContact: [{ type: String, url: String }],
     recruiter: {type: mongoose.Schema.Types.ObjectId, ref:'RecruiterDetail'},
     experience: {type: mongoose.Schema.Types.ObjectId, ref:'Experience'},

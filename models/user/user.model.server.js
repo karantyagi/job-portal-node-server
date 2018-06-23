@@ -13,11 +13,18 @@ module.exports = {
     findUserByCredentials: findUserByCredentials,
     createUser: createUser,
     deleteUser: deleteUser,
-    updateUser: updateUser
+    updateUser: updateUser,
+    findPendingRecruiters: findPendingRecruiters
 };
+
+
 
 function findAllUsers() {
     return userModel.find();
+}
+
+function findPendingRecruiters() {
+    return userModel.find({requestStatus:'Pending'},{password:0});
 }
 
 
@@ -37,6 +44,9 @@ function findUserByCredentials(username, password) {
 
 function createUser(user) {
     console.log(user);
+    if (user.role === 'Recruiter') {
+        user['requestStatus']='Pending'
+    }
     return userModel.create(user);
 }
 
