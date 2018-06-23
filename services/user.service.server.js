@@ -16,6 +16,8 @@ module.exports = function (app) {
     app.get('/api/user/:userId', findUserById);
     app.get('/api/pending', findPendingRecruiters);
     app.post('/api/user/', createUser);
+    app.delete('/api/user/:userId', deleteUser);
+    app.approveRecruiter('/api/approve/userId',approveRecruiter)
 
     // users
     app.post('/api/login', login);
@@ -23,8 +25,7 @@ module.exports = function (app) {
     app.get('/api/profile', getProfile);
     app.post('/api/logout', logout);
     app.put('/api/profile', updateProfile);
-    app.delete('/api/profile', deleteUser);
-
+    app.deleteProfile('/api/user', deleteProfile);
 
     function createUser(req, res) {
         var user = req.body;
@@ -52,7 +53,7 @@ module.exports = function (app) {
     }
 
     function findPendingRecruiters(req, res) {
-        if (req.session && req.session['user'] && req.session['user'].username==='admin') {
+        if (req.session && req.session['user'] && req.session['user'].role==='Admin') {
             userModel.findPendingRecruiters()
                 .then(function (user) {
                     res.json(user);
@@ -60,22 +61,6 @@ module.exports = function (app) {
         }
     }
 
-    // function login(req, res) {
-    //     var user = req.body;
-    //     var username = user.username;
-    //     var password = user.password;
-    //     userModel.findUserByCredentials(username, password)
-    //         .then(function (u) {
-    //             if (u != null) {
-    //                 req.session['user'] = u;
-    //                 res.send(u);
-    //             }
-    //             else {
-    //                 res.send(null);
-    //             }
-    //         });
-    //
-    // }
 
     function login(req, res) {
         var user = req.body;
@@ -166,9 +151,33 @@ module.exports = function (app) {
     }
 
     function deleteUser(req, res) {
-        if (req.session && req.session['user']) {
+        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+            var id = req.param['userId'];
+            userModel.deleteUser(id).then(function (status) {
+                res.send(status);
+            })
+        }
+        else {
+            res.send('no-session-exists');
+        }
+    }
+
+    function deleteProfile(req, res) {
+        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
             var id = req.session['user']._id;
             userModel.deleteUser(id).then(function (status) {
+                res.send(status);
+            })
+        }
+        else {
+            res.send('no-session-exists');
+        }
+    }
+
+    function approveRecruiter(req, res) {
+        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+            var id = req.param['userId'];
+            userModel.approveRecruiter(id).then(function (status) {
                 res.send(status);
             })
 

@@ -14,7 +14,8 @@ module.exports = {
     createUser: createUser,
     deleteUser: deleteUser,
     updateUser: updateUser,
-    findPendingRecruiters: findPendingRecruiters
+    findPendingRecruiters: findPendingRecruiters,
+    approveRecruiter: approveRecruiter,
 };
 
 
@@ -58,6 +59,12 @@ function updateUser(userId, newUser) {
     return userModel.update({_id: userId},
         {$set: newUser})
 }
+function approveRecruiter(userId) {
+    return userModel.update({_id: userId},
+        {$set: {requestStatus: 'Verified'}})
+}
+
+
 
 
 
