@@ -17,7 +17,7 @@ module.exports = function (app) {
     app.get('/api/pending', findPendingRecruiters);
     app.post('/api/user/', createUser);
     app.delete('/api/user/:userId', deleteUser);
-    app.post('/api/approve/userId',approveRecruiter)
+    app.post('/api/approve/:userId',approveRecruiter)
 
     // users
     app.post('/api/login', login);
@@ -152,7 +152,7 @@ module.exports = function (app) {
 
     function deleteUser(req, res) {
         if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
-            var id = req.param['userId'];
+            var id = req.params['userId'];
             userModel.deleteUser(id).then(function (status) {
                 res.send(status);
             })
@@ -175,8 +175,10 @@ module.exports = function (app) {
     }
 
     function approveRecruiter(req, res) {
+        console.log('in here');
         if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
-            var id = req.param['userId'];
+            var id = req.params['userId'];
+            console.log(id);
             userModel.approveRecruiter(id).then(function (status) {
                 res.send(status);
             })
