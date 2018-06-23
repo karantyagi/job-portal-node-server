@@ -11,11 +11,19 @@ module.exports = function (app) {
     var skillModel =
         require('./../models/skill/skill.model.server');
 
-    app.get('/api/skill', findSkillByUserId);
+    app.get('/api/skill', findAllSkills);
+    app.get('/api/skill/user', findSkillByUserId);
     app.post('/api/skill', createSkill);
     app.put('/api/skill/:skillId', updateSkill);
     app.delete('/api/skill/:skillId', deleteSkill);
 
+
+    function findAllSkills(req, res) {
+        skillModel.findAllSkills()
+            .then(function (skills) {
+                res.send(skills);
+            });
+    }
 
     function createSkill(req, res) {
         var skill = req.body;
@@ -33,7 +41,7 @@ module.exports = function (app) {
 
     function findSkillByUserId(req, res) {
         if (req.session && req.session['user']) {
-            var userId = req.params['userId']._id;
+            var userId = req.session['user']._id;
             skillModel.findSkillByUserId(userId)
                 .then(function (skill) {
                     res.json(skill);

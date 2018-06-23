@@ -7,14 +7,19 @@ var experienceModel = mongoose
 
 
 module.exports = {
+    findAllExperiences:findAllExperiences,
     findExperienceByUserId: findExperienceByUserId,
     createExperience: createExperience,
     deleteExperience: deleteExperience,
     updateExperience: updateExperience
 };
 
+function findAllExperiences() {
+    return experienceModel.find();
+}
+
 function findExperienceByUserId(userId) {
-    return experienceModel.findById(userId);
+    return experienceModel.find({user: userId});
 }
 
 function createExperience(experience) {

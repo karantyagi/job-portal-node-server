@@ -11,11 +11,19 @@ module.exports = function (app) {
     var projectModel =
         require('./../models/project/project.model.server');
 
-    app.get('/api/project', findProjectByUserId);
+    app.get('/api/project', findAllProjects);
+    app.get('/api/project/user', findProjectByUserId);
     app.post('/api/project', createProject);
     app.put('/api/project/:projectId', updateProject);
     app.delete('/api/project/:projectId', deleteProject);
 
+
+    function findAllProjects(req, res) {
+        projectModel.findAllProjects()
+            .then(function (projects) {
+                res.send(projects);
+            });
+    }
 
     function createProject(req, res) {
         var project = req.body;
@@ -33,7 +41,7 @@ module.exports = function (app) {
 
     function findProjectByUserId(req, res) {
         if (req.session && req.session['user']) {
-            var userId = req.params['userId']._id;
+            var userId = req.session['user']._id;
             projectModel.findProjectByUserId(userId)
                 .then(function (project) {
                     res.json(project);

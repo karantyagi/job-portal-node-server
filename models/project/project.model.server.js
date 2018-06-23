@@ -5,8 +5,8 @@ var projectSchema =
 var projectModel = mongoose
     .model('ProjectModel', projectSchema);
 
-
 module.exports = {
+    findAllProjects: findAllProjects,
     findProjectByUserId: findProjectByUserId,
     createProject: createProject,
     deleteProject: deleteProject,
@@ -14,8 +14,13 @@ module.exports = {
 };
 
 
+function findAllProjects() {
+    // console.log('pass 1');
+    return projectModel.find();
+}
+
 function findProjectByUserId(userId) {
-    return projectModel.findById(userId);
+    return projectModel.find({user: userId});
 }
 
 function createProject(project) {

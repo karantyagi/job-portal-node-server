@@ -11,11 +11,19 @@ module.exports = function (app) {
     var educationModel =
         require('./../models/education/education.model.server');
 
-    app.get('/api/education', findEducationByUserId);
+    app.get('/api/education', findAllEducation);
+    app.get('/api/education/user', findEducationByUserId);
     app.post('/api/education', createEducation);
     app.put('/api/education/:educationId', updateEducation);
     app.delete('/api/education/:educationId', deleteEducation);
 
+
+    function findAllEducation(req, res) {
+        educationModel.findAllEducation()
+            .then(function (education) {
+                res.send(education);
+            });
+    }
 
     function createEducation(req, res) {
         var education = req.body;
@@ -33,7 +41,8 @@ module.exports = function (app) {
 
     function findEducationByUserId(req, res) {
         if (req.session && req.session['user']) {
-            var userId = req.params['userId']._id;
+            var userId = req.session['user']._id;
+            console.log('TEST : ', userId);
             educationModel.findEducationByUserId(userId)
                 .then(function (education) {
                     res.json(education);

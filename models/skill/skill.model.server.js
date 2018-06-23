@@ -14,12 +14,13 @@ module.exports = {
     updateSkill: updateSkill
 };
 
-function findAllSkills() {
-    return skillModel.find();
-}
 
 function findSkillByUserId(userId) {
-    return skillModel.findById(userId);
+    return skillModel.find({user: userId});
+}
+
+function findAllSkills() {
+    return skillModel.find();
 }
 
 

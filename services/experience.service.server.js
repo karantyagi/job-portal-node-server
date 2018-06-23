@@ -11,11 +11,18 @@ module.exports = function (app) {
     var experienceModel =
         require('./../models/experience/experience.model.server');
 
-    app.get('/api/experience', findExperienceByUserId);
+    app.get('/api/experience', findAllExperiences);
+    app.get('/api/experience/user', findExperienceByUserId);
     app.post('/api/experience', createExperience);
     app.put('/api/experience/:experienceId', updateExperience);
     app.delete('/api/experience/:experienceId', deleteExperience);
 
+    function findAllExperiences(req, res) {
+        experienceModel.findAllExperiences()
+            .then(function (experiences) {
+                res.send(experiences);
+            });
+    }
 
     function createExperience(req, res) {
         var experience = req.body;
@@ -33,7 +40,8 @@ module.exports = function (app) {
 
     function findExperienceByUserId(req, res) {
         if (req.session && req.session['user']) {
-            var userId = req.params['userId']._id;
+            var userId = req.session['user']._id;
+            // console.log('TEST : ', userId);
             experienceModel.findExperienceByUserId(userId)
                 .then(function (experience) {
                     res.json(experience);

@@ -7,14 +7,19 @@ var educationModel = mongoose
 
 
 module.exports = {
+    findAllEducation:findAllEducation,
     findEducationByUserId: findEducationByUserId,
     createEducation: createEducation,
     deleteEducation: deleteEducation,
     updateEducation: updateEducation
 };
 
+function findAllEducation() {
+    return educationModel.find();
+}
+
 function findEducationByUserId(userId) {
-    return educationModel.findById(userId);
+    return educationModel.find({user: userId});
 }
 
 function createEducation(education) {
