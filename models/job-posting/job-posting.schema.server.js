@@ -10,6 +10,7 @@ var jobPostingSchema = mongoose.Schema({
     skillsRequired: [String],
     responsibilities: [String],
     minQualification: [String],
+    jobSource: String,  // check to differentiate between git hub and job-portal jos postings
     company : {type: mongoose.Schema.Types.ObjectId, ref: 'CompanyModel'}
 
 }, {collection: 'JobPosting'});
