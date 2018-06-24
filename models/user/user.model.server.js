@@ -7,6 +7,7 @@ var userModel = mongoose
 
 module.exports = {
     findUserById: findUserById,
+    findRecruiterbyId: findRecruiterbyId,
     findAllUsers:findAllUsers,
     findUserByUsername: findUserByUsername,
     findUserByCredentials: findUserByCredentials,
@@ -29,6 +30,14 @@ function findPendingRecruiters() {
 
 function findUserById(userId) {
     return userModel.findById(userId,{password:0});
+}
+
+
+function findRecruiterbyId(userId) {
+    console.log('     ID :     ', userId);
+    return userModel.find({user: userId})
+        .populate('recruiter')
+        .exec();
 }
 
 function findUserByUsername(username) {
