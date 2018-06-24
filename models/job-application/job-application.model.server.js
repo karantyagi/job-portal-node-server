@@ -10,6 +10,7 @@ module.exports = {
     findAllJobApplicationByUserId: findAllJobApplicationByUserId,
     createJobApplication: createJobApplication,
     deleteJobApplication: deleteJobApplication,
+    deleteJobApplicationForJobPosting: deleteJobApplicationForJobPosting,
     updateJobApplication: updateJobApplication,
     deleteJobApplicationForUser:deleteJobApplicationForUser
 };
@@ -32,6 +33,15 @@ function deleteJobApplication(jobApplicationId) {
 
 function deleteJobApplicationForUser(userId) {
     return jobApplicationModel.remove({user: userId});
+}
+
+function deleteJobApplicationForJobPosting(jobPostingId, jobSource) {
+    if (jobSource === 'github' )
+      return jobApplicationModel.remove({gitHubJobId: jobPostingId});
+    else
+        return jobApplicationModel.remove({jobPosting: jobPostingId});
+
+
 }
 
 

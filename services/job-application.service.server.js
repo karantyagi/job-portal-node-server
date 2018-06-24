@@ -14,6 +14,7 @@ module.exports = function (app) {
     app.get('/api/jobApplication', findAllJobApplicationByUserId);
     app.post('/api/jobApplication', createJobApplication);
     app.delete('/api/jobApplication/:jobApplicationId', deleteJobApplication);
+    app.delete('/api/jobApplication/:jobApplicationId/:source', deleteJobApplicationForJobPosting);
     app.put('/api/jobApplication/:jobApplicationId', updateJobApplication);
 
 
@@ -59,9 +60,24 @@ module.exports = function (app) {
 
 
     function deleteJobApplication(req, res) {
+        console.log('dddd');
         if (req.session && req.session['user']) {
             var id = req.params['jobApplicationId']
             jobApplicationModel.deleteJobApplication(id).then(function (status) {
+                res.send(status);
+            })
+        }
+        else {
+            res.send('no-session-exists');
+        }
+    }
+
+    function deleteJobApplicationForJobPosting(req, res) {
+        var jobPosting = req.body;
+        if (req.session && req.session['user']) {
+            var id = req.params['jobApplicationId']
+            var source = req.params['source']
+            jobApplicationModel.deleteJobApplicationForJobPosting(id,source).then(function (status) {
                 res.send(status);
             })
         }
