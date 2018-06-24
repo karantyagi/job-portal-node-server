@@ -6,6 +6,7 @@ var userSchema = mongoose.Schema({
     lastName: String,
     email: String,
     phone: String,
+    tagline: String,
     role: String,
     requestStatus: String, // 'status types : 'Pending' && 'Verified''
     socialContact: [{ socialtype: String, url: String }],
