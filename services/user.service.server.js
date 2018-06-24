@@ -23,6 +23,7 @@ module.exports = function (app) {
     app.post('/api/login', login);
     app.post('/api/register', register);
     app.get('/api/profile', getProfile);
+    app.get('/api/profile/recruiter', getRecruiterProfile);
     app.post('/api/logout', logout);
     app.put('/api/profile', updateProfile);
     app.delete('/api/user', deleteProfile);
@@ -111,6 +112,22 @@ module.exports = function (app) {
             console.log(req.session['user']);
             res.json(req.session['user']);
 
+        } else {
+            res.send(null);
+        }
+
+    }
+
+    function getRecruiterProfile(req, res) {
+        if (req.session && req.session['user']) {
+            console.log('check this');
+            console.log(req.session['user']._id);
+            userModel.findRecruiterbyId(req.session['user']._id)
+                .then((recruiter) => {
+                    console.log('--------- recruiter \n', recruiter);
+                    res.json(recruiter);
+                })
+            // res.json(req.session['user']);
         } else {
             res.send(null);
         }
