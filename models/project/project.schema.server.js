@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var projectSchema = mongoose.Schema({
     projectName : String,
-    startDate: Date,
-    endDate: Date,
+    startDate : { month: String, year: String},
+    endDate : { month: String, year: String},
     ongoingStatus: String,
     collaborators: [String],
     url: String,
