@@ -7,8 +7,7 @@ var jobApplicationModel = mongoose
 
 
 module.exports = {
-    findJobApplicationByUserId: findJobApplicationByUserId,
-    findJobApplicationByJobId: findJobApplicationByJobId,
+    findAllJobApplicationByUserId: findAllJobApplicationByUserId,
     createJobApplication: createJobApplication,
     deleteJobApplication: deleteJobApplication,
     updateJobApplication: updateJobApplication,
@@ -19,8 +18,8 @@ function findJobApplicationByJobId(jobId) {
     return jobApplicationModel.findById(jobId);
 }
 
-function findJobApplicationByUserId(userId) {
-    return jobApplicationModel.findById(userId);
+function findAllJobApplicationByUserId(userId) {
+    return jobApplicationModel.find({user:userId});
 }
 
 function createJobApplication(jobApplication) {

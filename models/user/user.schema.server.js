@@ -8,7 +8,7 @@ var userSchema = mongoose.Schema({
     phone: String,
     tagline: String,
     imageUrl: String,
-    role: String,
+    role: String, // role : Admin, JobSeeker , Recruiter
     requestStatus: String, // 'status types : 'Pending' && 'Verified''
     socialContact: [{ socialtype: String, url: String }],
     recruiter: {type: mongoose.Schema.Types.ObjectId, ref:'RecruiterDetail'},
