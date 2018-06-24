@@ -64,6 +64,10 @@ jobApplicationService(app);
 var jobPostingService = require('./services/job-posting.service.server');
 jobPostingService(app);
 
+var projectService = require('./services/project.service.server');
+projectService(app);
+
+
 
 
 app.listen(process.env.PORT || 5500, function(){
