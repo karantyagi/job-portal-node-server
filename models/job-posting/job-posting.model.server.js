@@ -13,7 +13,8 @@ module.exports = {
     findJobPostingByType: findJobPostingByType,
     createJobPosting: createJobPosting,
     deleteJobPosting: deleteJobPosting,
-    updateJobPosting: updateJobPosting
+    updateJobPosting: updateJobPosting,
+    findJobPostingByUserId:findJobPostingByUserId
 };
 
 function findAllJobPostings() {
@@ -24,6 +25,10 @@ function findAllJobPostings() {
 function findJobPostingById(jobPostingId) {
     console.log(jobPostingId);
     return jobPostingModel.findById(jobPostingId);
+}
+function findJobPostingByUserId(userId) {
+    console.log(userId);
+    return jobPostingModel.find({user:userId});
 }
 
 function findJobPostingByLocation(location) {

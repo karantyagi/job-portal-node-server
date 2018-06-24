@@ -12,7 +12,8 @@ module.exports = function (app) {
         require('./../models/job-posting/job-posting.model.server');
 
     app.get('/api/jobPosting/:jobPostingId', findJobPostingById);
-    app.get('/api/jobPosting/', findAllJobPostings);
+    app.get('/api/allJobPosting', findAllJobPostings);
+    app.get('/api/jobPosting', findAllJobPostingByUserId);
     app.post('/api/jobPosting', createJobPosting);
     app.put('/api/jobPosting/:jobPostingId', updateJobPosting);
     app.delete('/api/jobPosting/:jobPostingId', deleteJobPosting);
@@ -21,6 +22,7 @@ module.exports = function (app) {
     function createJobPosting(req, res) {
         var jobPosting = req.body;
         if (req.session && req.session['user'] && req.session['user'].role != 'JobSeeker') {
+            jobPosting['user'] = req.session['user']._id;
             jobPostingModel.createJobPosting(jobPosting)
                 .then(function (status) {
                     res.send(status);
@@ -30,6 +32,18 @@ module.exports = function (app) {
         }
     }
 
+
+    function findAllJobPostingByUserId(req, res) {
+        if (req.session && req.session['user'] && req.session['user'].role != 'JobSeeker') {
+        var userId = req.session['user']._id;
+        jobPostingModel.findJobPostingByUserId(userId)
+            .then(function (jobPosting) {
+                res.json(jobPosting);
+            });
+        } else {
+            res.send({status: 'session expired'});
+        }
+    }
 
     function findJobPostingById(req, res) {
         var jobPostingId = req.params['jobPostingId'];
