@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var jobPostingSchema = mongoose.Schema({
+    title: String,
     datePosted : Date,
     status : String,
     location: String,
