@@ -5,7 +5,6 @@ var userSchema =
 var userModel = mongoose
     .model('UserModel', userSchema);
 
-
 module.exports = {
     findUserById: findUserById,
     findAllUsers:findAllUsers,
@@ -16,9 +15,8 @@ module.exports = {
     updateUser: updateUser,
     findPendingRecruiters: findPendingRecruiters,
     approveRecruiter: approveRecruiter,
+    // imageUrlUpload: imageUrlUpload
 };
-
-
 
 function findAllUsers() {
     return userModel.find();
@@ -64,8 +62,7 @@ function approveRecruiter(userId) {
         {$set: {requestStatus: 'Verified'}})
 }
 
-
-
-
-
-
+// function imageUrlUpload(userId, imageUrl) {
+//     return userModel.update({_id: userId},
+//         {$set: {imageUrl: imageUrl}})
+// }
