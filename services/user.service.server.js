@@ -10,6 +10,8 @@ module.exports = function (app) {
 
     var userModel =
         require('./../models/user/user.model.server');
+    var recruiterModel =
+        require('./../models/recruiter-detail/recruiter-detail.model.server');
 
     // admin access
     app.get('/api/user/', findAllUsers);
@@ -98,8 +100,14 @@ module.exports = function (app) {
                     user.password = '';
                     if (user.role!= 'Recruiter') {
                         req.session['user'] = user;
+                        res.json({status: true});
+                    } else{
+                        recruiterModel.createRecruiterDetail({user:user._id}).then(() =>{
+                             res.json({status:true});
+                            }
+                        )
                     }
-                    res.json({status: true});
+
                 })
             }
         })
