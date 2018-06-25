@@ -36,11 +36,17 @@ function deleteJobApplicationForUser(userId) {
 }
 
 function deleteJobApplicationForJobPosting(jobPostingId, jobSource) {
-    if (jobSource === 'github' )
-      return jobApplicationModel.remove({gitHubJobId: jobPostingId});
-    else
-        return jobApplicationModel.remove({jobPosting: jobPostingId});
+    console.log(jobPostingId);
+    console.log(jobSource);
 
+    if (jobSource === 'github' ) {
+        return jobApplicationModel.remove({gitHubJobId: jobPostingId});
+    }
+    else {
+        console.log('here');
+        console.log(jobApplicationModel.find({jobPosting:jobPostingId}));
+        return jobApplicationModel.remove({_id: jobPostingId});
+    }
 
 }
 
