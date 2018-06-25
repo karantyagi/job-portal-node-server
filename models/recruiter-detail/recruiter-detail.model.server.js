@@ -20,6 +20,7 @@ function findAllRecruiter() {
 
 
 function findRecruiterDetailByUserId(userId) {
+    console.log(userId);
     return recruiterDetailModel.findOne({user: userId});
 }
 

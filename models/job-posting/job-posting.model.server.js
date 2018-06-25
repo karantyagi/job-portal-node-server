@@ -51,4 +51,5 @@ function deleteJobPosting(jobPostingId) {
 function updateJobPosting(jobPostingId, newJobPosting) {
     return jobPostingModel.update({_id: jobPostingId},
         {$set: newJobPosting})
+
 }

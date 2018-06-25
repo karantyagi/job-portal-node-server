@@ -118,7 +118,10 @@ module.exports = function (app) {
         if (req.session && req.session['user']) {
             console.log('check this');
             console.log(req.session['user']);
-            res.json(req.session['user']);
+            userModel.findUserById(req.session['user']._id).then((user) =>
+                res.json(user)
+            );
+
 
         } else {
             res.send(null);
