@@ -7,16 +7,20 @@ var recruiterDetailModel = mongoose
 
 
 module.exports = {
+    findAllRecruiter: findAllRecruiter,
     findRecruiterDetailByUserId: findRecruiterDetailByUserId,
     createRecruiterDetail: createRecruiterDetail,
     deleteRecruiterDetail: deleteRecruiterDetail,
     updateRecruiterDetail: updateRecruiterDetail
 };
 
+function findAllRecruiter() {
+    return recruiterDetailModel.find();
+}
 
 
 function findRecruiterDetailByUserId(userId) {
-    return recruiterDetailModel.findById(userId);
+    return recruiterDetailModel.findOne({user: userId});
 }
 
 function createRecruiterDetail(recruiterDetail) {

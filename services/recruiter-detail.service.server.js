@@ -11,18 +11,19 @@ module.exports = function (app) {
     var recruiterModel =
         require('./../models/recruiter-detail/recruiter-detail.model.server');
 
+    app.get('/api/recruiter', findAllRecruiter);
     app.get('/api/recruiter/user', findRecruiterDetailByUserId);
     app.post('/api/recruiter', createRecruiterDetail);
     app.put('/api/recruiter/:recruiterId', updateRecruiterDetail);
     app.delete('/api/recruiter/:recruiterId', deleteRecruiterDetail);
 
 
-    // function findAllSkills(req, res) {
-    //     skillModel.findAllSkills()
-    //         .then(function (skills) {
-    //             res.send(skills);
-    //         });
-    // }
+    function findAllRecruiter(req, res) {
+        recruiterModel.findAllRecruiter()
+            .then(function (recruiter) {
+                res.send(recruiter);
+            });
+    }
 
     function createRecruiterDetail(req, res) {
         var recruiter = req.body;
