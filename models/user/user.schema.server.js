@@ -11,14 +11,14 @@ var userSchema = mongoose.Schema({
     role: String, // role : Admin, JobSeeker , Recruiter
     requestStatus: String, // 'status types : 'Pending' && 'Verified''
     socialContact: [{ socialtype: String, url: String }],
-    recruiter: {type: mongoose.Schema.Types.ObjectId, ref:'RecruiterDetail'},
-    experience: {type: mongoose.Schema.Types.ObjectId, ref:'Experience'},
-    education: {type: mongoose.Schema.Types.ObjectId, ref:'Education'},
-    skills: {type: mongoose.Schema.Types.ObjectId, ref:'Skill'},
+    recruiter: {type: mongoose.Schema.Types.ObjectId, ref:'RecruiterDetailModel'},
+    experience: {type: mongoose.Schema.Types.ObjectId, ref:'ExperienceModel'},
+    education: {type: mongoose.Schema.Types.ObjectId, ref:'EducationModel'},
+    skills: {type: mongoose.Schema.Types.ObjectId, ref:'SkillModel'},
     projects: {type: mongoose.Schema.Types.ObjectId, ref:'Project'},
-    extraCurricular: {type: mongoose.Schema.Types.ObjectId, ref:'ExtraCurricular'},
-    awards: {type: mongoose.Schema.Types.ObjectId, ref:'Award'},
-    certificates: {type: mongoose.Schema.Types.ObjectId, ref:'Certificate'}
+    extraCurricular: {type: mongoose.Schema.Types.ObjectId, ref:'ExtraCurricularModel'},
+    awards: {type: mongoose.Schema.Types.ObjectId, ref:'AwardModel'},
+    certificates: {type: mongoose.Schema.Types.ObjectId, ref:'CertificateModel'}
 
 }, {collection: 'User'});
 
