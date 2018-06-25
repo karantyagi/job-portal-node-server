@@ -10,6 +10,7 @@ var userSchema = mongoose.Schema({
     imageUrl: String,
     role: String, // role : Admin, JobSeeker , Recruiter
     requestStatus: String, // 'status types : 'Pending' && 'Verified''
+    premiumRequestStatus: String, // 'status types : 'Pending' && 'Verified''
     socialContact: [{ socialtype: String, url: String }],
     recruiter: {type: mongoose.Schema.Types.ObjectId, ref:'RecruiterDetailModel'},
     experience: {type: mongoose.Schema.Types.ObjectId, ref:'ExperienceModel'},
