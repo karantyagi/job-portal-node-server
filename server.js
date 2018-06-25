@@ -67,7 +67,8 @@ jobPostingService(app);
 var projectService = require('./services/project.service.server');
 projectService(app);
 
-
+var recruiterService = require('./services/recruiter-detail.service.server');
+recruiterService(app);
 
 
 app.listen(process.env.PORT || 5500, function(){
