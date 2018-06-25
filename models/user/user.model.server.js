@@ -16,7 +16,7 @@ module.exports = {
     updateUser: updateUser,
     findPendingRecruiters: findPendingRecruiters,
     approveRecruiter: approveRecruiter,
-    // imageUrlUpload: imageUrlUpload
+    // imageUrlUpload   : imageUrlUpload
 };
 
 function findAllUsers() {
