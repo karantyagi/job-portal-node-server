@@ -14,14 +14,14 @@ module.exports = function (app) {
         require('./../models/recruiter-detail/recruiter-detail.model.server');
 
     // admin access
-    app.get('/api/user/', findAllUsers);
+    app.get('/api/user', findAllUsers);
     app.get('/api/user/:userId', findUserById);
     app.get('/api/pending', findPendingRecruiters);
-    app.post('/api/user/', createUser);
+    app.post('/api/user', createUser);
     app.delete('/api/user/:userId', deleteUser);
-    app.post('/api/approve/:userId',approveRecruiter);
-    app.post('/api/premium/approve/:userId',grantPremiumAccess);
-    app.post('/api/premium/revoke/:userId',revokePremiumAccess);
+    app.post('/api/approve/:userId', approveRecruiter);
+    app.post('/api/premium/approve/:userId', grantPremiumAccess);
+    app.post('/api/premium/revoke/:userId', revokePremiumAccess);
 
     // users
     app.post('/api/login', login);
@@ -33,13 +33,27 @@ module.exports = function (app) {
     app.delete('/api/user', deleteProfile);
 
     function createUser(req, res) {
-        var user = req.body;
+        if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
+            var user = req.body;
+            userModel.findUserByUsername(user.username).then(function (u) {
+                console.log(u);
+                if (u != null) {
+                    res.json({status: false});
+                } else {
+                    userModel.createUser(user).then(function (user) {
+                        console.log(user);
+                        userModel.createUser(user)
+                            .then(function (status) {
+                                res.send(status);
+                            });
+                    })
+                }
+            })
 
-        console.log(user);
-        userModel.createUser(user)
-            .then(function (status) {
-                res.send(status);
-            });
+        }
+        else {
+            res.json({status: 'no-session-exists'});
+        }
     }
 
     function findAllUsers(req, res) {
@@ -58,7 +72,7 @@ module.exports = function (app) {
     }
 
     function findPendingRecruiters(req, res) {
-        if (req.session && req.session['user'] && req.session['user'].role==='Admin') {
+        if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
             userModel.findPendingRecruiters()
                 .then(function (user) {
                     res.json(user);
@@ -72,19 +86,19 @@ module.exports = function (app) {
         var username = user.username;
         var password = user.password;
         userModel.findUserByCredentials(username, password)
-            .then((u) =>   {
-               if (u!=null){
-                   if ((u.role === 'JobSeeker' || u.role === 'Admin')
-                       || (u.role === 'Recruiter' && u.requestStatus != 'Pending')){
-                       req.session['user']=u;
-                       res.json({status:'success',role:u.role})
-                   }  else {
-                           res.json({status:'Recruiter verification pending',role:null});
-                   }
+            .then((u) => {
+                if (u != null) {
+                    if ((u.role === 'JobSeeker' || u.role === 'Admin')
+                        || (u.role === 'Recruiter' && u.requestStatus != 'Pending')) {
+                        req.session['user'] = u;
+                        res.json({status: 'success', role: u.role})
+                    } else {
+                        res.json({status: 'Recruiter verification pending', role: null});
+                    }
 
-               } else {
-                   res.json({status:'user does not exists',role:null});
-               }
+                } else {
+                    res.json({status: 'user does not exists', role: null});
+                }
 
             });
 
@@ -100,12 +114,12 @@ module.exports = function (app) {
             } else {
                 userModel.createUser(user).then(function (user) {
                     user.password = '';
-                    if (user.role!= 'Recruiter') {
+                    if (user.role != 'Recruiter') {
                         req.session['user'] = user;
                         res.json({status: true});
-                    } else{
-                        recruiterModel.createRecruiterDetail({user:user._id}).then(() =>{
-                             res.json({status:true});
+                    } else {
+                        recruiterModel.createRecruiterDetail({user: user._id}).then(() => {
+                                res.json({status: true});
                             }
                         )
                     }
@@ -151,7 +165,7 @@ module.exports = function (app) {
         if (req.session && req.session['user']) {
             var user = req.session['user'];
             var id = user._id;
-           // console.log(id);
+            // console.log(id);
             var newUser = req.body;
             userModel.updateUser(id, newUser).then(
                 function (status) {
@@ -181,19 +195,19 @@ module.exports = function (app) {
     }
 
     function deleteUser(req, res) {
-        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+        if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
             var id = req.params['userId'];
             userModel.deleteUser(id).then(function (status) {
                 res.send(status);
             })
         }
         else {
-            res.send('no-session-exists');
+            res.json({status: 'no-session-exists'});
         }
     }
 
     function deleteProfile(req, res) {
-        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+        if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
             var id = req.session['user']._id;
             userModel.deleteUser(id).then(function (status) {
                 res.send(status);
@@ -206,7 +220,7 @@ module.exports = function (app) {
 
     function approveRecruiter(req, res) {
         console.log('in here');
-        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+        if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
             var id = req.params['userId'];
             console.log(id);
             userModel.approveRecruiter(id).then(function (status) {
@@ -221,7 +235,7 @@ module.exports = function (app) {
 
     function grantPremiumAccess(req, res) {
         console.log('in here');
-        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+        if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
             var id = req.params['userId'];
             console.log(id);
             userModel.grantPremiumAccess(id).then(function (status) {
@@ -236,7 +250,7 @@ module.exports = function (app) {
 
     function revokePremiumAccess(req, res) {
         console.log('in here');
-        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+        if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
             var id = req.params['userId'];
             console.log(id);
             userModel.revokePremiumAccess(id).then(function (status) {
@@ -248,4 +262,5 @@ module.exports = function (app) {
             res.send('no-session-exists');
         }
     }
-};
+}
+;
