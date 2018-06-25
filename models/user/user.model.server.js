@@ -16,6 +16,8 @@ module.exports = {
     updateUser: updateUser,
     findPendingRecruiters: findPendingRecruiters,
     approveRecruiter: approveRecruiter,
+    revokePremiumAccess:revokePremiumAccess,
+    grantPremiumAccess:grantPremiumAccess
     // imageUrlUpload   : imageUrlUpload
 };
 
@@ -71,6 +73,16 @@ function updateUser(userId, newUser) {
 function approveRecruiter(userId) {
     return userModel.update({_id: userId},
         {$set: {requestStatus: 'Verified'}})
+}
+
+function revokePremiumAccess(userId) {
+    return userModel.update({_id: userId},
+        {$unset:{premiumRequestStatus:1}})
+}
+
+function grantPremiumAccess(userId) {
+    return userModel.update({_id: userId},
+        {$set:{premiumRequestStatus:'Verified'}})
 }
 
 // function imageUrlUpload(userId, imageUrl) {

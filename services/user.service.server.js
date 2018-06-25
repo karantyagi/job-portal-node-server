@@ -19,7 +19,9 @@ module.exports = function (app) {
     app.get('/api/pending', findPendingRecruiters);
     app.post('/api/user/', createUser);
     app.delete('/api/user/:userId', deleteUser);
-    app.post('/api/approve/:userId',approveRecruiter)
+    app.post('/api/approve/:userId',approveRecruiter);
+    app.post('/api/premium/approve/:userId',grantPremiumAccess);
+    app.post('/api/premium/revoke/:userId',revokePremiumAccess);
 
     // users
     app.post('/api/login', login);
@@ -208,6 +210,36 @@ module.exports = function (app) {
             var id = req.params['userId'];
             console.log(id);
             userModel.approveRecruiter(id).then(function (status) {
+                res.send(status);
+            })
+
+        }
+        else {
+            res.send('no-session-exists');
+        }
+    }
+
+    function grantPremiumAccess(req, res) {
+        console.log('in here');
+        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+            var id = req.params['userId'];
+            console.log(id);
+            userModel.grantPremiumAccess(id).then(function (status) {
+                res.send(status);
+            })
+
+        }
+        else {
+            res.send('no-session-exists');
+        }
+    }
+
+    function revokePremiumAccess(req, res) {
+        console.log('in here');
+        if (req.session && req.session['user'] && req.session['user'].role ==='Admin') {
+            var id = req.params['userId'];
+            console.log(id);
+            userModel.revokePremiumAccess(id).then(function (status) {
                 res.send(status);
             })
 
