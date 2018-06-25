@@ -43,8 +43,8 @@ module.exports = function (app) {
                     userModel.createUser(user).then(function (user) {
                         console.log(user);
                         userModel.createUser(user)
-                            .then(function (status) {
-                                res.send(status);
+                            .then(function () {
+                                res.send({status: true});
                             });
                     })
                 }
