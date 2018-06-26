@@ -1,5 +1,6 @@
 module.exports = function (app) {
     var session = require('express-session');
+
     app.use(session({
         resave: false,
         saveUninitialized: true,
@@ -223,9 +224,12 @@ module.exports = function (app) {
         if (req.session && req.session['user'] && req.session['user'].role === 'Admin') {
             var id = req.params['userId'];
             console.log(id);
-            userModel.approveRecruiter(id).then(function (status) {
-                res.send(status);
-            })
+            userModel.approveRecruiter(id).then((status) =>
+            userModel.findUserById(id).then(user => {
+               // console.log(user.email);
+                sendEmailToUser(user.email);
+               res.send(status);
+            }))
 
         }
         else {
@@ -262,4 +266,20 @@ module.exports = function (app) {
             res.send('no-session-exists');
         }
     }
+
+    function sendEmailToUser(emailAddress) {
+        const sgMail = require('@sendgrid/mail');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        const msg = {
+            to: emailAddress,
+            from: 'JobSearchMadeEasy@enjoy.com',
+            //templateId: 'e1ac3968-cf00-4d86-8012-869ab6d97429'
+            subject: 'You are verified!!',
+            text: 'Hi,\n' +
+            'Welcome to Job Search Made Easy.\n' +
+            'You are now a verified recruiter. Thanks for joining us. Enjoy the features of our new application by logging',
+        };
+         return sgMail.send(msg);
+    }
+
 }
