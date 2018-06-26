@@ -227,7 +227,7 @@ module.exports = function (app) {
             userModel.approveRecruiter(id).then((status) =>
             userModel.findUserById(id).then(user => {
                // console.log(user.email);
-                sendEmailToUser(user.email);
+                sendEmailToUser(user.email, user.username);
                res.send(status);
             }))
 
@@ -267,7 +267,7 @@ module.exports = function (app) {
         }
     }
 
-    function sendEmailToUser(emailAddress) {
+    function sendEmailToUser(emailAddress, username) {
         const sgMail = require('@sendgrid/mail');
         sgMail.setApiKey(process.env.SENDGRID_API_KEY);
         const msg = {
@@ -275,9 +275,10 @@ module.exports = function (app) {
             from: 'JobSearchMadeEasy@enjoy.com',
             //templateId: 'e1ac3968-cf00-4d86-8012-869ab6d97429'
             subject: 'You are verified!!',
-            text: 'Hi,\n' +
+            text: 'Hi '+username+',\n' +
             'Welcome to Job Search Made Easy.\n' +
-            'You are now a verified recruiter. Thanks for joining us. Enjoy the features of our new application by logging',
+            'You are now a verified recruiter. Thanks for joining us. Enjoy the features of ' +
+            'our new application by logging in the best job search website',
         };
          return sgMail.send(msg);
     }
